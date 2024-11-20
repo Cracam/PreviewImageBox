@@ -21,14 +21,14 @@ public class PreviewImageBox extends Pane {
         public PreviewImageBox() {
                 imageViews = new ArrayList<>();
 
-                // Configurer le Pane
-                this.setWidth(510);
-                this.setHeight(510);
-                this.setMaxHeight(510);
-                this.setMaxWidth(510);
+//                // Configurer le Pane
+//                this.setWidth(510);
+//                this.setHeight(510);
+//                this.setMaxHeight(510);
+//                this.setMaxWidth(510);
 
                 // Ajouter une bordure pour visualiser les limites du Pane
-                this.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+           //     this.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
 
                 // Écouter l'ajout à la scène
                 this.sceneProperty().addListener((obs, oldScene, newScene) -> {
