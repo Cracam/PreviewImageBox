@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import previewimagebox.PreviewImageBox;
 
 public class PreviewImageBoxTest extends Application {
 
@@ -20,6 +21,8 @@ public class PreviewImageBoxTest extends Application {
         // Ajouter des images à partir de fichiers locaux
         addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\Cartes Vertes\\design\\Classique\\Batch4\\RECTO1.png");
         addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\Cartes Vertes\\design\\Classique\\Batch4\\verso_0.png");
+        addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\Cartes Vertes\\design\\Classique\\Batch4\\RECTO1.png");
+        addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\received_951688789163420.jpeg");
         addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\Cartes Vertes\\design\\Classique\\Batch4\\RECTO1.png");
         addImageFromFile(previewImageBox, "C:\\BACKUP\\ENSE3\\Foyer\\received_951688789163420.jpeg");
         // Créer la scène et la montrer
