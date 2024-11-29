@@ -21,15 +21,8 @@ public class PreviewImageBox extends Pane {
         public PreviewImageBox() {
                 imageViews = new ArrayList<>();
 
-//                // Configurer le Pane
-//                this.setWidth(510);
-//                this.setHeight(510);
-//                this.setMaxHeight(510);
-//                this.setMaxWidth(510);
 
-                // Ajouter une bordure pour visualiser les limites du Pane
-           //     this.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
-
+ this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 // Écouter l'ajout à la scène
                 this.sceneProperty().addListener((obs, oldScene, newScene) -> {
                         if (newScene != null) {
@@ -56,9 +49,19 @@ public class PreviewImageBox extends Pane {
         public void addImageView(ImageView imageView) {
                 // Garder le ratio de l'image
                 imageView.setPreserveRatio(true);
-
+                 imageView.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 imageViews.add(imageView);
                 actuLinesColumnsMatrix();
+                updatePane();
+        }
+        
+        
+        /**
+         * Clear all the Image view currenly in the preview boxe
+         */
+        public void clearAllImagesViews(){
+                imageViews.clear();
+                  actuLinesColumnsMatrix();
                 updatePane();
         }
 
@@ -146,6 +149,13 @@ public class PreviewImageBox extends Pane {
          * This method will Update the pane when this one is resised
          */
         private void updatePane() {
+                              
+                if (imageViews.size() == 0) {
+                        return;
+                }
+                
+                
+                
                 this.getChildren().clear();
 
                 // Obtenir la taille disponible du Pane
@@ -157,10 +167,9 @@ public class PreviewImageBox extends Pane {
                 double maxHeightFactor = (height - (numRows - 1) * vgap) / sum(heightRatios);
                 double usedRatio;
 
-                System.out.println("___" + maxWitdthFactor);
-
-                System.out.println("X   " + width + "   X F  " + ((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)));
-                System.out.println("Y   " + height + "   Y F  " + ((numCols - 1) * vgap + maxWitdthFactor * sum(heightRatios)));
+//                System.out.println("___" + maxWitdthFactor);
+//                System.out.println("X   " + width + "   X F  " + ((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)));
+//                System.out.println("Y   " + height + "   Y F  " + ((numCols - 1) * vgap + maxWitdthFactor * sum(heightRatios)));
 
                 if (((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)) > width) {
                         usedRatio = maxWitdthFactor;
@@ -196,6 +205,7 @@ public class PreviewImageBox extends Pane {
                                 //System.out.println("y "+row * (heightFactor * heightRatios[row - 1] + vgap));
 
                         }
+                        imageView.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                         this.getChildren().add(imageView);
                 }
         }
