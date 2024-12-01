@@ -21,23 +21,16 @@ public class PreviewImageBox extends Pane {
         public PreviewImageBox() {
                 imageViews = new ArrayList<>();
 
+                this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
+                // Add listeners to the width and height properties of the component
+                this.widthProperty().addListener((observable, oldWidth, newWidth) -> {
+                        System.out.println("Width changed: " + newWidth);
+                        updatePane();
+                });
 
- this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
-                // Écouter l'ajout à la scène
-                this.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                        if (newScene != null) {
-                                // Quand la scène est prête, écouter les changements de taille
-                                newScene.windowProperty().addListener((obsWindow, oldWindow, newWindow) -> {
-                                        if (newWindow != null) {
-                                                // Lorsque la fenêtre est prête, initialiser
-                                                this.widthProperty().addListener((observable, oldWidth, newWidth) -> updatePane());
-                                                this.heightProperty().addListener((observable, oldHeight, newHeight) -> updatePane());
-
-                                                // Appeler updatePane pour s'assurer que tout est initialisé
-                                                updatePane();
-                                        }
-                                });
-                        }
+                this.heightProperty().addListener((observable, oldHeight, newHeight) -> {
+                        System.out.println("Height changed: " + newHeight);
+                        updatePane();
                 });
         }
 
