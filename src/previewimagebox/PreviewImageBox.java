@@ -24,12 +24,12 @@ public class PreviewImageBox extends Pane {
                 this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 // Add listeners to the width and height properties of the component
                 this.widthProperty().addListener((observable, oldWidth, newWidth) -> {
-                        System.out.println("Width changed: " + newWidth);
+                      //  System.out.println("Width changed: " + newWidth);
                         updatePane();
                 });
 
                 this.heightProperty().addListener((observable, oldHeight, newHeight) -> {
-                        System.out.println("Height changed: " + newHeight);
+                     //   System.out.println("Height changed: " + newHeight);
                         updatePane();
                 });
         }
@@ -42,19 +42,17 @@ public class PreviewImageBox extends Pane {
         public void addImageView(ImageView imageView) {
                 // Garder le ratio de l'image
                 imageView.setPreserveRatio(true);
-                 imageView.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 imageViews.add(imageView);
                 actuLinesColumnsMatrix();
                 updatePane();
         }
-        
-        
+
         /**
          * Clear all the Image view currenly in the preview boxe
          */
-        public void clearAllImagesViews(){
+        public void clearAllImagesViews() {
                 imageViews.clear();
-                  actuLinesColumnsMatrix();
+                actuLinesColumnsMatrix();
                 updatePane();
         }
 
@@ -73,7 +71,7 @@ public class PreviewImageBox extends Pane {
                 // Calculer le nombre de colonnes et de lignes
                 numCols = (int) Math.ceil(Math.sqrt(imageCount));
                 numRows = (int) Math.ceil((double) imageCount / numCols);
-                System.out.println("Number row and col : " + numRows + "   " + numCols);
+              //  System.out.println("Number row and col : " + numRows + "   " + numCols);
 
                 int[][] heightArray = new int[numRows][numCols];
                 int[][] widthArray = new int[numCols][numRows];
@@ -142,13 +140,11 @@ public class PreviewImageBox extends Pane {
          * This method will Update the pane when this one is resised
          */
         private void updatePane() {
-                              
+
                 if (imageViews.size() == 0) {
                         return;
                 }
-                
-                
-                
+
                 this.getChildren().clear();
 
                 // Obtenir la taille disponible du Pane
@@ -160,9 +156,6 @@ public class PreviewImageBox extends Pane {
                 double maxHeightFactor = (height - (numRows - 1) * vgap) / sum(heightRatios);
                 double usedRatio;
 
-//                System.out.println("___" + maxWitdthFactor);
-//                System.out.println("X   " + width + "   X F  " + ((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)));
-//                System.out.println("Y   " + height + "   Y F  " + ((numCols - 1) * vgap + maxWitdthFactor * sum(heightRatios)));
 
                 if (((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)) > width) {
                         usedRatio = maxWitdthFactor;
