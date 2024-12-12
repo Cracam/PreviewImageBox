@@ -3,12 +3,11 @@ package previewimagebox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class PreviewImageBox extends Pane {
 
-        private final List<ImageView> imageViews;
+        private final HashMap<String, ImageView> imageViews;
         private final double hgap = 10; // Espace horizontal entre les images
         private final double vgap = 10; // Espace vertical entre les images
 
@@ -19,7 +18,7 @@ public class PreviewImageBox extends Pane {
         private int numRows;
 
         public PreviewImageBox() {
-                imageViews = new ArrayList<>();
+                imageViews = new HashMap<>();
 
                 this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 // Add listeners to the width and height properties of the component
@@ -37,12 +36,13 @@ public class PreviewImageBox extends Pane {
         /**
          * This code add an imageView to the Pane
          *
+         * @param key
          * @param imageView
          */
-        public void addImageView(ImageView imageView) {
+        public void setImageView(String key,ImageView imageView) {
                 // Garder le ratio de l'image
                 imageView.setPreserveRatio(true);
-                imageViews.add(imageView);
+                imageViews.put(key,imageView);
                 actuLinesColumnsMatrix();
                 updatePane();
         }
@@ -77,24 +77,27 @@ public class PreviewImageBox extends Pane {
                 int[][] widthArray = new int[numCols][numRows];
                 int col;
                 int row;
-                for (int i = 0; i < imageViews.size(); i++) {
+                
+                int i = 0;
+                for (String key : imageViews.keySet()) {
+
                         col = i % numCols;
                         row = i / numCols;
 
-                        heightArray[row][col] = (int) imageViews.get(i).getImage().getHeight();
-                        widthArray[col][row] = (int) imageViews.get(i).getImage().getWidth();
-
+                        heightArray[row][col] = (int) imageViews.get(key).getImage().getHeight();
+                        widthArray[col][row] = (int) imageViews.get(key).getImage().getWidth();
+                        i++;
                 }
 
                 heightRatios = new int[numRows];
                 widthRatios = new int[numCols];
 
-                for (int i = 0; i < heightRatios.length; i++) {
-                        heightRatios[i] = findMaxValue(heightArray[i]);
+                for (int j = 0; j < heightRatios.length; j++) {
+                        heightRatios[j] = findMaxValue(heightArray[j]);
                 }
 
-                for (int i = 0; i < widthRatios.length; i++) {
-                        widthRatios[i] = findMaxValue(widthArray[i]);
+                for (int j = 0; j < widthRatios.length; j++) {
+                        widthRatios[j] = findMaxValue(widthArray[j]);
                 }
 
         }
@@ -141,7 +144,7 @@ public class PreviewImageBox extends Pane {
          */
         private void updatePane() {
 
-                if (imageViews.size() == 0) {
+                if (imageViews.isEmpty()) {
                         return;
                 }
 
@@ -165,8 +168,9 @@ public class PreviewImageBox extends Pane {
                 }
 
                 //System.out.println(imageViews.get(0).getImage().getHeight() + "   " + imageViews.get(0).getImage().getWidth());
-                for (int i = 0; i < imageViews.size(); i++) {
-                        ImageView imageView = imageViews.get(i);
+                  int i = 0;
+                for (String key : imageViews.keySet()) {
+                        ImageView imageView = imageViews.get(key);
 
                         int col = i % numCols;
                         int row = i / numCols;
@@ -193,6 +197,7 @@ public class PreviewImageBox extends Pane {
                         }
                         imageView.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                         this.getChildren().add(imageView);
+                        i++;
                 }
         }
 
