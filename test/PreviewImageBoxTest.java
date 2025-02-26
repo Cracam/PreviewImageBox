@@ -14,7 +14,7 @@ public class PreviewImageBoxTest extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PreviewImageBox previewImageBox = new PreviewImageBox();
+    PreviewImageBox previewImageBox = new PreviewImageBox();
 
     
 

@@ -4,6 +4,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.HashMap;
+import javafx.scene.layout.StackPane;
 
 public class PreviewImageBox extends Pane {
 
@@ -17,20 +18,27 @@ public class PreviewImageBox extends Pane {
         private int numCols;
         private int numRows;
 
+        private boolean locked = false;
+
+
         public PreviewImageBox() {
                 imageViews = new HashMap<>();
-
-                this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
+                //   this.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
                 // Add listeners to the width and height properties of the component
                 this.widthProperty().addListener((observable, oldWidth, newWidth) -> {
-                      //  System.out.println("Width changed: " + newWidth);
-                        updatePane();
+                        //  System.out.println("Width changed: " + newWidth);
+
+                                updatePane();
+
                 });
 
                 this.heightProperty().addListener((observable, oldHeight, newHeight) -> {
-                     //   System.out.println("Height changed: " + newHeight);
-                        updatePane();
+                        //   System.out.println("Height changed: " + newHeight);
+
+                                updatePane();
+
                 });
+
         }
 
         /**
@@ -39,12 +47,14 @@ public class PreviewImageBox extends Pane {
          * @param key
          * @param imageView
          */
-        public void setImageView(String key,ImageView imageView) {
+        public void setImageView(String key, ImageView imageView) {
+
                 // Garder le ratio de l'image
                 imageView.setPreserveRatio(true);
-                imageViews.put(key,imageView);
+                imageViews.put(key, imageView);
                 actuLinesColumnsMatrix();
                 updatePane();
+
         }
 
         /**
@@ -71,13 +81,13 @@ public class PreviewImageBox extends Pane {
                 // Calculer le nombre de colonnes et de lignes
                 numCols = (int) Math.ceil(Math.sqrt(imageCount));
                 numRows = (int) Math.ceil((double) imageCount / numCols);
-              //  System.out.println("Number row and col : " + numRows + "   " + numCols);
+                //  System.out.println("Number row and col : " + numRows + "   " + numCols);
 
                 int[][] heightArray = new int[numRows][numCols];
                 int[][] widthArray = new int[numCols][numRows];
                 int col;
                 int row;
-                
+
                 int i = 0;
                 for (String key : imageViews.keySet()) {
 
@@ -139,66 +149,63 @@ public class PreviewImageBox extends Pane {
                 return ret;
         }
 
-        /**
-         * This method will Update the pane when this one is resised
-         */
-        private void updatePane() {
-
-                if (imageViews.isEmpty()) {
-                        return;
-                }
-
-                this.getChildren().clear();
-
-                // Obtenir la taille disponible du Pane
-                double width = this.getWidth();
-                double height = this.getHeight();
-
-                // Calculer la taille moyenne d'une "tuile"
-                double maxWitdthFactor = (width - (numCols - 1) * hgap) / sum(widthRatios);
-                double maxHeightFactor = (height - (numRows - 1) * vgap) / sum(heightRatios);
-                double usedRatio;
-
-
-                if (((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)) > width) {
-                        usedRatio = maxWitdthFactor;
-                } else {
-                        usedRatio = maxHeightFactor;
-
-                }
-
-                //System.out.println(imageViews.get(0).getImage().getHeight() + "   " + imageViews.get(0).getImage().getWidth());
-                  int i = 0;
-                for (String key : imageViews.keySet()) {
-                        ImageView imageView = imageViews.get(key);
-
-                        int col = i % numCols;
-                        int row = i / numCols;
-
-                        // Ajuster les tailles tout en préservant le ratio
-                        imageView.setFitWidth(usedRatio * widthRatios[col]);
-                        imageView.setFitHeight(usedRatio * heightRatios[row]);
-                        //   imageView.setPreserveRatio(true);
-                        // imageView.setSmooth(true);
-
-                        // Positionner les images
-                        if (col == 0) {
-                                imageView.setLayoutX(0);
-                        } else {
-                                imageView.setLayoutX(col * (usedRatio * widthRatios[col - 1] + hgap));
-                                //  System.out.println("x "+col * (witdthFactor * widthRatios[col - 1] + hgap));
-                        }
-                        if (row == 0) {
-                                imageView.setLayoutY(0);
-                        } else {
-                                imageView.setLayoutY(row * (usedRatio * heightRatios[row - 1] + vgap));
-                                //System.out.println("y "+row * (heightFactor * heightRatios[row - 1] + vgap));
-
-                        }
-                        imageView.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
-                        this.getChildren().add(imageView);
-                        i++;
-                }
+       /**
+     * This method will update the pane when it is resized
+     */
+    private void updatePane() {
+        if (imageViews.isEmpty()) {
+            return;
         }
+
+        this.getChildren().clear();
+
+        // Obtenir la taille disponible du Pane
+        double width = this.getWidth();
+        double height = this.getHeight();
+
+        // Calculer la taille moyenne d'une "tuile"
+        double maxWitdthFactor = (width - (numCols - 1) * hgap) / sum(widthRatios);
+        double maxHeightFactor = (height - (numRows - 1) * vgap) / sum(heightRatios);
+        double usedRatio;
+
+        if (((numCols - 1) * hgap + maxHeightFactor * sum(widthRatios)) > width) {
+            usedRatio = maxWitdthFactor;
+        } else {
+            usedRatio = maxHeightFactor;
+        }
+
+        int i = 0;
+        for (String key : imageViews.keySet()) {
+            ImageView imageView = imageViews.get(key);
+
+            int col = i % numCols;
+            int row = i / numCols;
+
+            // Ajuster les tailles tout en préservant le ratio
+            imageView.setFitWidth(usedRatio * widthRatios[col]);
+            imageView.setFitHeight(usedRatio * heightRatios[row]);
+
+            // Encapsuler l'ImageView dans un StackPane avec une bordure
+            StackPane borderedImageView = createBorderedImageView(imageView);
+
+            // Positionner les images
+            double imageWidth = usedRatio * widthRatios[col];
+            double imageHeight = usedRatio * heightRatios[row];
+
+            borderedImageView.setLayoutX(col * (imageWidth + hgap)); // Aligner à gauche
+            borderedImageView.setLayoutY(row * (imageHeight + vgap));
+
+            this.getChildren().add(borderedImageView);
+            i++;
+        }
+    }
+        private StackPane createBorderedImageView(ImageView imageView) {
+                StackPane stackPane = new StackPane();
+                stackPane.getChildren().add(imageView);
+                stackPane.setStyle("-fx-border-color: blue; -fx-border-width: 2px; -fx-border-style: solid;");
+                return stackPane;
+        }
+
+     
 
 }
